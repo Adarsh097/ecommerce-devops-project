@@ -29,3 +29,6 @@ output "eks_node_group_public_ips" {
   description = "Public IPs of the EKS node group instances"
   value       = data.aws_instances.eks_nodes.public_ips
 }
+output "jenkins_url" {
+  value = "http://${aws_instance.testinstance.public_ip}:8080"
+}

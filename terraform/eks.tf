@@ -1,7 +1,7 @@
 module "eks" {
 
   source  = "terraform-aws-modules/eks/aws"
-  version = "19.15.1"
+  version = "~> 20.0"
 
   cluster_name                   = local.name
   cluster_endpoint_public_access = true
@@ -26,7 +26,7 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
 
-    instance_types = ["t2.large"]
+    instance_types = ["c7i-flex.large"]
 
     attach_cluster_primary_security_group = true
 
@@ -40,20 +40,32 @@ module "eks" {
       max_size     = 3
       desired_size = 2
 
-      instance_types = ["t2.large"]
+      instance_types = ["c7i-flex.large"]
       capacity_type  = "SPOT"
 
-      disk_size = 35 
-      use_custom_launch_template = false  # Important to apply disk size!
+      disk_size                  = 35
+      use_custom_launch_template = false # Important to apply disk size!
 
       tags = {
-        Name = "tws-demo-ng"
+        Name        = "ad-demo-ng"
         Environment = "dev"
-        ExtraTag = "e-commerce-app"
+        ExtraTag    = "e-commerce-app"
       }
     }
   }
- 
+
+  node_security_group_additional_rules = {
+
+    nodeport_ingress = {
+      description = "Allow NodePort services"
+      protocol    = "tcp"
+      from_port   = 30000
+      to_port     = 32767
+      type        = "ingress"
+      cidr_blocks = ["0.0.0.0/0"]
+    }
+
+  }
   tags = local.tags
 
 

@@ -187,3 +187,12 @@ ubuntu@ip-172-31-15-48:~$ docker ps
 ```
 
 18. Create pipleline using the code in jenkins file.
+19. Make the change in the kubernetes manifests as per domain or email.
+
+# Continuous deployment
+
+```
+
+
+
+```
